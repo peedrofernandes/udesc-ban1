@@ -1,0 +1,74 @@
+-- 1) Faça uma expressão SQL que utilize o operador IN e que retorne o nome e CPF dos médicos que também são pacientes do hospital.
+select nome, cpf from medicos
+where cpf in (select cpf from pacientes);
+
+-- 2) Faça uma expressão SQL que utilize o operador IN e que retorne o nome e idade dos médicos que têm consulta com a paciente Ana.
+select m.nome, m.idade from medicos m
+where m.codm in (
+  select m.codm from medicos m
+ 	natural join consultas c
+  join pacientes p on c.codp = p.codp
+  where p.nome = 'Ana'
+);
+
+-- 3) Faça uma expressão SQL que utilize o operador IN e que retorne o número e andar dos ambulatórios onde nenhum médico dá atendimento.
+
+select a.nroa, a.andar from ambulatorios a
+where a.nroa not in (
+  select distinct m.nroa from medicos m where nroa is not null
+);
+
+-- 4) Faça uma expressão SQL que utilize o operador IN e que retorne o nome, CPF e idade dos pacientes que têm consultas marcadas sempre para dias anteriores ao dia 16.
+select nome, cpf, idade from pacientes
+where codp in (
+	select codp from consultas 
+  natural join pacientes
+  where extract(day from data) < 16
+);
+
+-- 5) Faça uma expressão SQL que utilize o operador ANY/ALL e que retorne o números e andares de todos os ambulatórios, exceto o de menor capacidade.
+select nroa, andar from ambulatorios
+where capacidade != any (
+  select min(capacidade) from ambulatorios
+);
+
+-- 6) Faça uma expressão SQL que utilize o operador ANY/ALL e que retorne o nome e idade dos médicos que têm consulta com a paciente Ana.
+select nome, idade from medicos
+where codm = any (
+  select codm from consultas
+  natural join pacientes
+  where pacientes.nome = 'Ana'
+);
+
+-- 7) Faça uma expressão SQL que utilize o operador ANY/ALL e que retorne o nome e a idade do médico mais jovem (sem usar função MIN!).
+select nome, idade from medicos
+where codm != all (
+  select m1.codm from medicos m1, medicos m2
+	where m1.idade > m2.idade
+);
+
+-- 8) Faça uma expressão SQL que utilize o operador ANY/ALL e que retorne o nome e CPF dos pacientes com consultas marcadas para horários anteriores a todos os horários de consultas marcadas para o dia 12 de Novembro de 2006.
+select nome, cpf from pacientes
+where codp = any (
+  select codp from pacientes
+  natural join consultas
+  where data < date('2006-11-12')
+);
+
+-- 9) Faça uma expressão SQL que utilize o operador EXISTS e que retorne o nome e idade dos médicos que têm consulta com a paciente Ana.
+select nome, idade from medicos m
+where exists (
+  select * from consultas
+  natural join pacientes
+  where nome = 'Ana' and codm = m.codm
+);
+
+-- 10) Faça uma expressão SQL que utilize o operador EXISTS e que retorne o número do ambulatório com a maior capacidade (sem usar função MAX!).
+select nroa, capacidade from ambulatorios a1
+where not exists (
+  select * from ambulatorios a2
+  where a1.capacidade < a2.capacidade
+);
+
+
+

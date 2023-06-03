@@ -1,0 +1,46 @@
+1) Planeja-se construir uma aplicação para gerenciar as transações de compra e venda de uma loja de varejo. Esta loja possui diversos clientes, que envolvem pessoas físicas e jurídicas. Em uma venda, o cliente pode adquirir diversos produtos em quantidades variadas. Por exemplo, ao comprar parafusos ele determina a quantidade que quer obter através de uma compra em específico. A loja também deseja controlar os pedidos de compra efetuados a seus fornecedores para a reposição de seu estoque. Da mesma forma que nas vendas, a loja pode solicitar a compra de diversos produtos em quantidades variadas. Cada produto possui dados como preço unitário de venda, preço unitário de compra, unidade de medida, peso e dimensões (altura, largura e profundidade). A loja também deseja controlar o seu estoque, para tanto precisa saber a quantidade de cada produto disponível em seu estabelecimento. Em todos os casos, a entrega do pedido de compra realizado ao fornecedor é intermediado por uma transportadora, da qual deseja-se saber os dados bem como a previsão de entrega do pedido. Além de controlar compras e vendas, o sistema deve servir para vários tipos de consultas que a loja pode querer fazer: 
+
+1. Emissão de relatório de todos os produtos com estoque abaixo de 10 unidades. 
+
+2. Previsão de estoque para uma determinada data, considerando para isto os pedidos de compra que estão previstos para serem entregues. 
+
+3. Consulta de pedido de venda onde deve constar os produtos solicitados, suas quantidades, preços unitários, preço total considerando as quantidades por produto e preço total do pedido. 
+
+4. Emissão de relatório mensal contendo o valor total faturado (total em R$ com os pedidos de compra), bem como o valor total gasto com os pedidos de venda.
+
+Resposta: ./diagrama1.jpeg
+
+2) Uma pequena locadora de vídeos possui cerca de 2.000 DVDs de vídeo, cujo empréstimo deve ser controlado. Cada DVD possui um número. Para cada filme, é necessário saber seu título e sua categoria (comédia, drama, aventura, …). Cada filme recebe um identificador próprio. Para cada DVD é controlado que filme ele contém. Para cada filme há pelo menos um DVD, e cada DVD contém somente um filme. Alguns poucos filmes necessitam dois DVDs. Os clientes podem desejar encontrar os filmes estrelados pelo seu ator predileto. Por isso, é necessário manter a informação dos atores que estrelam em cada filme. Nem todo filme possui estrelas. Para cada ator os clientes às vezes desejam saber o nome completo, bem como a data de nascimento. A locadora possui muitos clientes cadastrados. Somente clientes cadastrados podem alugar DVDs. Para cada cliente é necessário saber seu prenome e seu sobrenome, seu telefone e seu endereço. Além disso, cada cliente recebe um número de associado. Finalmente, desejamos saber que DVDs cada cliente tem emprestados. Um cliente pode ter vários DVDs em um instante no tempo. Não são mantidos registros históricos de aluguéis. Crie um diagrama EER que represente as informações contidas neste enunciado.
+
+Resposta: ./diagrama2.jpeg
+
+3) O objetivo é projetar um sistema de reservas para uma companhia de aviação. O sistema contará com um banco de dados central, que será acessado por aplicações clientes, rodando tanto dentro da própria companhia, quanto fora dela. A transação central do sistema é a reserva. Uma reserva é identificada por um código gerado pelo sistema em computador. A reserva é feita para um único passageiro, do qual se conhece apenas o nome. A reserva compreende um conjunto de trechos de vôos, que acontecerão em determinada data/hora. Para cada trecho, a reserva é feita em uma classe (econômica, executiva, etc.). Um vôo é identificado por um código e possui uma origem e um destino. Por exemplo, o vôo 595 sai de Porto Alegre com destino a São Paulo. Um vôo é composto de vários trechos, correspondendo às escalas intermediárias do vôo. Por exemplo, o vôo 595 é composto de dois trechos, um de Porto Alegre a Londrina e o outro de Londrina a São Paulo. Cabe salientar que há cidades que são servidas por vários aeroportos. Por isso, é importante informar ao passageiro que faz a reserva, qual é o aeroporto no qual o vôo passa. Às vezes os clientes, ao fazer a reserva querem saber qual é o tipo de aeronave que será utilizada em determinado trecho de vôo. Alguns poucos vôos, principalmente internacionais, têm troca de aeronave em determinadas escalas. Nem todos os vôos operam em todos os dias da semana. Inclusive, certos vôos têm pequenas mudanças de horário em certos dias da semana. Cada reserva possui um prazo de validade. Caso os bilhetes não tenham sido emitidos, até esgotar-se o prazo de reserva, a mesma é cancelada. Reservas podem ser prorrogadas. Como o "check-in” de todos os vôos está informatizado, a companhia possibilita a reserva de assento para o passageiro. Reservas de assento podem ser feitas com até três meses de antecedência. Além de efetivar reservas, o sistema deve servir para vários tipos de consultas que os clientes podem querer fazer: 
+
+1.Possibilidades de viagem de uma cidade ou de um aeroporto para o outro 
+
+2.O mesmo, mas restrito a determinados dias da semana 
+
+3.Horários de chegada ou de saída em determinados vôos 
+
+4.Disponibilidade de vagas em um trecho de vôo 
+
+5.Disponibilidades de determinados assentos em um trecho de vôo.
+
+Resposta: ./diagrama3.jpeg
+
+4) Modele um BD para uma empresa de locação de veículos. A empresa em questão aluga automóveis, camionetas de passageiros e camionetas de carga. Ela atende a dois mercados, o das pessoas físicas e o das pessoas jurídicas. Para acelerar o atendimento, é importante conhecer os dados de clientes que já tenham usado a locadora no passado. Para cada pessoa física é necessário conhecer seu nome, sexo, data nascimento, endereço e CPF. Já para as pessoas jurídicas é necessário conhecer o seu nome, CNPJ e endereço. Os clientes são identificados por um código interno a locadora. A empresa tem uma grande rede de filiais, espalhada pelo sul do país. Em um momento no tempo, um veículo encontra-se sobre responsabilidade de uma filial. Entretanto, como veículos podem ser alugados para viagens em um sentido somente, eles podem mudar de filial. Um veículo é identificado por sua placa. Além disso, é necessário conhecer o número do chassis, o número do motor, o tipo de veículo e a cor de cada veículo. O sistema em computador deverá registrar: 
+
+1. Os veículos disponíveis em determinada filial na data corrente, 
+
+2. As reservas para veículos em uma filial, com previsão de que veículos estarão disponíveis em uma data futura, 
+
+3. Os veículos presentemente alugados pela filial, o ponto de entrega (caso seja diferente do de locação) e a data de entrega prevista. 
+
+Os veículos são classificados por uma tabela de tipos. Por exemplo, P3 corresponde a automóveis pequenos, de quatro portas e com ar-condicionado e G4 a grandes automóveis de luxo. As reservas não são feitas para uma marca ou modelo de veículo, mas para um tipo de veículo. Para tipos de automóveis, os clientes desejam saber o tamanho, (classificado em pequeno, médio e grande), o número de passageiros, o número de portas, bem como se possui os seguintes acessórios: ar-condicionado, rádio, tocafitas, CD, direção hidráulica e câmbio automático. Para tipos de camionetas de passageiros, as informações são as mesmas que para automóveis. Já para tipos de camionetas de carga, as informações acima não são relevantes. Neste caso, os clientes desejam saber a capacidade de carga da camioneta. Para cada tipo de veículo, há um determinado número de horas necessários para limpeza e revisão de entrega, entre uma reserva e outra. Além disso, o sistema deve programar as revisões dos veículos, impedindo que sejam reservados quando há revisões pendentes. Esta programação é feita com base em um conjunto de parâmetros que são a quilometragem atual do veículo, a quilometragem média diária de um veículo do tipo, bem como em uma tabela de revisões do tipo de veículo. A seguradora dos veículos, exige que, para cada veículo alugado, seja mantida a identificação do motorista, o número de sua habilitação e a data de vencimento da mesma. A habilitação não pode vencer dentro do prazo da locação.
+
+Resposta: ./diagrama4.png
+
+5) Existem alguns problemas neste esquema conceitual. Identifique estes problemas e forneça um novo esquema corrigido. (figura1.png)
+
+Resposta: ./diagrama5.jpeg
+

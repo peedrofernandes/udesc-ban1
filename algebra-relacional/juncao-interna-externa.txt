@@ -1,0 +1,48 @@
+-- Buscar o número e a capacidade dos ambulatórios do quinto andar e o nome dos médicos que atendem neles.
+π nroa, capacidade, nome
+
+σ andar = 5
+
+(Ambulatorios ⨝ Medicos)
+
+-- Buscar o nome e o salário dos funcionários de Florianópolis e Palhoça que estão internados como pacientes e têm consulta marcada em 20/10/2006.
+
+π nome, salario
+
+σ (cidade = 'Florianopolis' or cidade = 'Palhoca') and data = date('2006-10-20')
+
+(Funcionarios ⨝ Funcionarios.codf = Consultas.codp Consultas)
+
+-- Buscar o número e o andar dos ambulatórios onde nenhum médico dá atendimento.
+π nroa, andar
+
+(Ambulatorios)
+
+-
+
+π nroa, andar
+
+(Ambulatorios ⨝ Medicos)
+
+-- Buscar o número dos ambulatórios que estão no mesmo andar do ambulatório que tem nroa=1 e possuem capacidade superior à capacidade dele.
+π A1.nroa
+
+σ A2.nroa = 1 and A1.capacidade > A2.capacidade
+
+(ρ A1 Ambulatorios ⨝ A1.andar = A2.andar ρ A2 Ambulatorios)
+
+-- Buscar os dados de todos os médicos e, para aqueles que têm consultas marcadas, mostrar os dados de suas consultas.
+(Medicos ⟕ Consultas)
+
+-- Buscar os números de todos os ambulatórios e, para aqueles ambulatórios nos quais médicos dão atendimento, exibir o código e o nome dos médicos associados.
+π nroa, codm, nome
+
+(Ambulatorios ⟕ Medicos)
+
+-- Mostrar em uma relação o CPF e o nome de todos os pacientes e de todos os médicos, apresentando estes dados de forma relacionada (na mesma linha) para aqueles que possuem consultas marcadas.
+
+π P.cpf, P.nome, M.cpf, M.nome
+
+((ρ P Pacientes ⨯ ρ M Medicos) ⨝ C.codm = M.codm and C.codp = P.codp ρ C Consultas)
+
+

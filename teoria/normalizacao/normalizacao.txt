@@ -1,0 +1,133 @@
+1) A tabela abaixo é uma tabela Não-Normalizada (NN). Obtenha a 1FN, 2FN, 3FN e 4FN:
+
+Evento (#codEvento, nomeEvento,
+
+              (#ID-artigo, título, ano, ID-revisor, nomeRevisor, grauEscolaridadeRevisor, nivelRevisor
+
+                          (#ID-autor, nomeAutor)))
+
+1FN, 2FN
+
+
+
+Evento (#cod, nome)
+
+Artigo (#id, titulo, ano, ID-Revisor, nomeRevisor, grauEscolaridadeRevisor, nivelRevisor, &codEvento)
+
+Autor (#id, nome, &idArtigo)
+
+
+
+3FN, 4FN
+
+
+
+Evento (#cod, nome)
+
+Revisor (#id, nome, grauEscolaridade, nivel)
+
+Artigo (#id, titulo, ano, &codEvento, &idRevisor)
+
+Autor (#id, nome, &idArtigo)
+
+2) Considere o exemplo de relatório de reservas de uma locadora de DVDs e produza as formas ÑN, 1FN, 2FN, 3FN e 4 FN: (./figura1.png)
+
+ÑN
+
+Cliente (#idCliente, nome, telefone, (#idDvd, nome, genero, duracao, categoria, preço, dataRetirada))
+
+
+
+1FN
+
+Cliente (#id, nome, telefone)
+
+Dvd (#id, nome, telefone, dataReserva, &idCliente)
+
+
+
+2FN, 3FN, 4FN
+
+Cliente (#id, nome, telefone)
+
+Dvd (#id, nome, genero, duracao)
+
+Reserva (#&idCliente, &#idDvd, dataRetirada)
+
+3) Considere o documento XML abaixo que representa roteiros de viagem e produza as formas ÑN, 1FN, 2FN, 3FN e 4FN: (./figura2.png)
+
+ÑN
+
+Roteiro (
+
+  #codigo,
+
+  nome,
+
+  duracao, 
+
+  Pacote (#dataSaida, vagas, preco), 
+
+  Trecho (
+
+    Cidade (
+
+      #nome, 
+
+      estado,
+
+      populacao,
+
+      tempoEstadia,
+
+      &numeroOrdem
+
+    )
+
+  )
+
+)
+
+
+
+1FN
+
+Roteiro (#codigo, nome, duracao)
+
+Pacote (#dataSaida, vagas, preco, &codigoRoteiro)
+
+Trecho (#idTrecho, &codigoRoteiro)
+
+Cidade (#nome, #&idTrecho, #numeroOrdem, estado, populacao, tempoEstadia)
+
+
+
+2FN, 3FN
+
+Roteiro (#codigo, nome, duracao)
+
+Pacote (#dataSaida, vagas, preco, &codigoRoteiro)
+
+Cidade (#nome, estado, populacao)
+
+Trecho (#idTrecho, #&idCidade, &codigoRoteiro)
+
+Reserva (#numeroOrdem, tempoEstadia, &idTrecho)
+
+
+
+4FN
+
+Roteiro (#codigo, nome, duracao)
+
+Pacote (#dataSaida, vagas, preco, &codigoRoteiro)
+
+Cidade (#nome, estado, populacao)
+
+Trecho (#idTrecho, &codigoRoteiro)
+
+Reserva (#numeroOrdem, tempoEstadia, &idTrecho)
+
+TrechoCidade (#&idTrecho, #&idCidade)
+
+

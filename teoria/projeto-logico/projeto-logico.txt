@@ -1,0 +1,93 @@
+1) Considere o esquema conceitual apresentado abaixo referente ao domínio de Dietas. 
+Apresente um esquema relacional que corresponde ao mapeamento deste esquema conceitual.  Os esquemas relacionais considerados válidos são aqueles 
+que não permitem redundância de dados entre as tuplas de uma tabelas. 
+Nos esquemas relacionais, as chaves primárias são pré-fixadas com # e as estrangeiras com &. Atributos opcionais devem estar entre colchetes ([]).
+(./figura1.jpg)
+
+Restrições Alimentares (#idRestrição, descrição)
+Pratos (#idPrato, nome, dificuldade)
+Nutrientes (#idNutriente, nome)
+Alimentos (#idAlimentos, nome, unidadeMedida, caloriasPorUnidade, &idCat)
+Categorias (#idCat, nome)
+Dietas (#idDieta, responsávelTécnico, nome)
+
+
+Conteúdo Nutricional (#&idPrato, #&idNutriente)
+Proibições (#&idRestrição, #&idPrato)
+Composições (#&idPrato, #&idAlimento, quantidade)
+
+2) Considere o esquema conceitual apresentado abaixo referente ao domínio de Farmácia. Apresente um esquema relacional que corresponde ao 
+mapeamento deste esquema conceitual.  Os esquemas relacionais considerados válidos são aqueles que não permitem redundância de dados entre as 
+tuplas de uma tabelas. Nos esquemas relacionais, as chaves primárias são pré-fixadas com # e as estrangeiras com &. 
+Atributos opcionais devem estar entre colchetes ([]). (./figura2.jpg)
+
+Fabricantes (#CNPJ, nome, rua, nro, bairro)
+Produtos (#número, nomeComercial, tipoEmbalagem, preçoUnitário, &CNPJFabricante, qtdLote)
+Medicamentos (&#númeroProduto, tarja, fórmula)
+Perfumes (&#númeroProduto, sexo, intensidade)
+Receitas Médicas (#nrReceita, CRMMedico, data)
+Vendas (#nroNota, data, nomeCliente)
+Cliente (#CPF, nome)
+Email (#endereço, &CPFCliente)
+
+
+EmailVenda (#&nroNota, #&email)
+
+
+3) Considere o esquema conceitual apresentado abaixo referente ao domínio de uma rede de varejo. Apresente um esquema relacional que corresponde ao
+ mapeamento deste esquema conceitual.  Os esquemas relacionais considerados válidos são aqueles que não permitem redundância de dados entre as 
+tuplas de uma tabelas. Nos esquemas relacionais, as chaves primárias são pré-fixadas com # e as estrangeiras com &. Atributos opcionais 
+devem estar entre colchetes ([]). (./figura3.jpg)
+
+Pessoas (#codPessoa, nome)
+PessoaFísica (#&codPessoa, CPF)
+PessoaJurídica (#&codPessoa, CNPJ, RazaoSocial)
+Produtos (#codProduto, nome, qtdDisponivel, peso, altura, largura, profundidade, unidMedida, precoUnidCompra, precoUnidVenda)
+Empresas (#CNPJ, razaoSocial)
+
+Venda (#dtHoraEmissão, qtd, &codCliente, &codProduto)
+Compra (#dtHoraEmissão, qtd, &codProduto, &CNPJEmpresa, dtPrevEntrega)
+
+4) Considere o esquema conceitual apresentado abaixo referente ao domínio de uma Locadora de Veículos. Apresente um esquema relacional que corresponde ao mapeamento deste esquema conceitual.  Os esquemas relacionais considerados válidos são aqueles que não permitem redundância de dados entre as tuplas de uma tabelas. Nos esquemas relacionais, as chaves primárias são pré-fixadas com # e as estrangeiras com &. Atributos opcionais devem estar entre colchetes ([]). (./figura4.jpg)
+
+Clientes (#codInterno, nome, endereco, tipo, [dt_nasc], [cpf], [sexo], [cpnj])
+
+Filiais (#codFilial, nome, [#&dtHoraRetirada], [&dtHoraEntrega])
+
+Reserva (&codInterno, &codFilial, #dtHoraRetirada, dtHoraEntrega, [CNH], [dtVencimentoCNH], [nomeMotorista])
+
+Tipos Veiculo (#codigoTipo, tempoLimpeza, kmMediaDiaria, [n passageiros], [tamanho], [portas], [carga max])
+
+acessórios (#codAcessorio, tipoAcessorio)
+
+Revisões (#codRevisão, nome, descrição)
+
+manutenção(#&codRevisão, #&codigoTipo)
+
+veículos (#placa, nrMotor, cor, kmAtual, chassi, [&codFilial], [&codTipo])
+
+agendamento (#&placa, #&codRevisao, #dataHora)
+
+5) Considere o esquema conceitual apresentado abaixo referente ao domínio de Reserva de Passagens Aéreas. Apresente um esquema relacional que corresponde ao mapeamento deste esquema conceitual.  Os esquemas relacionais considerados válidos são aqueles que não permitem redundância de dados entre as tuplas de uma tabelas. Nos esquemas relacionais, as chaves primárias são pré-fixadas com # e as estrangeiras com &. Atributos opcionais devem estar entre colchetes ([]). (./figura5.jpg)
+
+Reservas (#Codigo, nomePass, prazoValidade, emitido)
+
+Trechos (#idTrecho, [horaPartida], [horaChegada], [&sigla])
+
+Escalas (&#Codigo, &#idTrecho, &idAssento)
+
+Aeroportos (#sigla, capacidade, nome, [&codCid])
+
+Cidades (#codCid, estado, pais, clima, nome)
+
+Voos (#codVoo, ciaAerea)
+
+diaSemana(#nome, &codVoo)
+
+itinerário (#&idTrecho, #&codVoo, &codAeronave)
+
+Aeronaves (#codAeronave, modelo, autorização, capacidade, ano)
+
+Assentos (#idAssento, classe, &codAeronave)
+
+

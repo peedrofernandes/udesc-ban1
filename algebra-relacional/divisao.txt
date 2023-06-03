@@ -1,0 +1,36 @@
+-- Bucar o código dos pacientes que têm consultas marcadas com todos os médicos.
+π codp, codm (Consultas)
+
+÷
+
+π codm (Medicos)
+
+-- Buscar o nome e o CPF dos médicos que têm consultas marcadas com todos os pacientes.
+π nome, cpf, codp (Medicos ⨝ Consultas)
+
+÷
+
+π codp (Pacientes)
+
+-- Buscar o nome e o CPF dos pacientes que têm consultas marcadas com todos os médicos ortopedistas que atendem nos ambulatórios do primeiro andar.
+
+π nome, cpf, codm (Pacientes ⨝ Consultas)
+
+÷
+
+π codm σ especialidade = 'ortopedia' and nroa = 1 (Medicos)
+
+-- Todos os médicos ortopedistas dão atendimento no mesmo ambulatório? Em caso afirmativo, buscar o andar e a capacidade deste ambulatório.
+π andar, capacidade, codm (Ambulatorios ⨝ Medicos)
+
+÷
+
+π codm σ especialidade = 'ortopedia' (Medicos)
+
+-- Mostrar o nome dos funcionários que são pacientes, e que por sua vez tem consulta marcada com todos os médicos pediatras.
+π nome, codm (Funcionarios ⨝ Funcionarios.codf = Consultas.codp Consultas)
+
+÷
+
+π codm σ especialidade = 'pediatria' (Medicos)
+

@@ -1,0 +1,194 @@
+/*
+Crie um BD com nome 'clinica' e em seguida, apresente as expressões SQL para criar as seguintes tabelas neste BD (coloque a resposta no campo de texto desta questão):
+
+ambulatorios (#nroa:serial, andar: int, [capacidade:int])
+medicos (#codm:serial,  nome:character varying(40), idade:int, [especialidade:character varying(20)], cpf:numeric(11,0), [cidade:character varying(30)], [&nroa:int])
+pacientes (#codp:serial, nome:character varying(40), idade:int, [cidade:character varying(30)], cpf:numeric(11,0), doenca:character varying(40))
+funcionarios (#codf:serial, nome:character varying(40), idade:int, [cidade:character varying(30)], cpf:numeric(11,0), [salario:numeric(8,2)], [cargo:character varying(20)])
+consultas (#&codm:int, #&codp:int, #data:date, hora:time)
+Observações:
+
+A chave primária de uma relação é definida pelo conjunto de atributos pré-fixados com #;
+Atributos entre colchetes [] são opcionais;
+Atributos pré-fixados com & correspondem a chaves estrangeiras. Toda chave estrangeira se refere a um valor de chave primária;
+*/
+
+CREATE TABLE ambulatorios (
+
+  nroa SERIAL NOT NULL,
+
+  andar INTEGER NOT NULL,
+
+  capacidade INTEGER,
+
+  PRIMARY KEY (nroa)
+
+);
+
+
+
+CREATE TABLE medicos (
+
+  codm SERIAL NOT NULL,
+
+  nome VARCHAR(40) NOT NULL,
+
+  idade INTEGER NOT NULL,
+
+  especialidade VARCHAR(20),
+
+  cpf NUMERIC(11, 0) NOT NULL,
+
+  cidade VARCHAR(30),
+
+  nroa INTEGER,
+
+  PRIMARY KEY (codm),
+
+  FOREIGN KEY (nroa) REFERENCES ambulatorios
+
+);
+
+ 
+
+CREATE TABLE pacientes (
+
+  codp SERIAL NOT NULL,
+
+  nome VARCHAR(40) NOT NULL,
+
+  idade INTEGER NOT NULL,
+
+  cidade VARCHAR(30),
+
+  cpf NUMERIC(11, 0) NOT NULL,
+
+  doenca VARCHAR(40) NOT NULL,
+
+  PRIMARY KEY (codp)
+
+);
+
+
+
+CREATE TABLE funcionarios (
+
+  codf SERIAL NOT NULL,
+
+  nome VARCHAR(40) NOT NULL,
+
+  idade INTEGER NOT NULL,
+
+  cidade VARCHAR(30),
+
+  cpf NUMERIC(11, 0) NOT NULL,
+
+  salario NUMERIC(8, 2),
+
+  cargo VARCHAR(20)
+
+);
+
+
+
+CREATE TABLE consultas (
+
+  codm INTEGER NOT NULL,
+
+  codp INTEGER NOT NULL,
+
+  data DATE NOT NULL,
+
+  hora TIME NOT NULL,
+
+  PRIMARY KEY (codm, codp, data),
+
+  FOREIGN KEY (codm) REFERENCES medicos,
+
+  FOREIGN KEY (codp) REFERENCES pacientes
+
+);
+
+-- Faça uma expressão em SQL que crie uma coluna com nome 'nroa' e tipo 'int' na tabela Funcionários. Use o comando Alter table.
+
+ALTER TABLE funcionarios ADD COLUMN nroa INTEGER;
+
+/*
+Formule expressões SQL para criar os seguintes índices:
+
+- índice único sobre o campo cpf de medicos
+
+- índice sobre o campo doenca de pacientes
+*/
+
+CREATE UNIQUE INDEX idx_unique_cpf ON medicos (cpf);
+
+-- Formule uma expressão em SQL para remover o índice doenca de pacientes.
+
+CREATE UNIQUE INDEX idx_doenca ON pacientes (doenca);
+
+-- Crie expressões SQL que insiram dados nas tabelas conforme a figura a seguir: (./figura.png)
+
+INSERT INTO medicos (nome, idade, especialidade, cpf, cidade, nroa) VALUES
+
+('Joao', 40, 'ortopedia', 10000100000, 'Florianopolis', 1),
+
+('Maria', 42, 'traumatologia', 10000110000, 'Blumenau', 2),
+
+('Pedro', 51, 'pediatria', 11000100000, 'São José', 2),
+
+('Carlos', 28, 'ortopedia', 11000110000, 'Joinville', NULL),
+
+('Marcia', 33, 'neurologia', 11000111000, 'Biguaçú', 3);
+
+
+
+INSERT INTO pacientes (nome, idade, cidade, cpf, doenca) VALUES
+
+('Ana', 20, 'Florianopolis', 20000200000, 'gripe'),
+
+('Paulo', 24, 'Palhoca', 20000220000, 'fratura'),
+
+('Lucia', 30, 'Biguacu', 22000200000, 'tendinite'),
+
+('Carlos', 28, 'Joinville', 11000110000, 'sarampo');
+
+
+
+INSERT INTO funcionarios (nome, idade, cidade, salario, cpf) VALUES
+
+('Rita', 32, 'Sao Jose', 1200, 20000100000),
+
+('Maria', 55, 'Palhoca', 1220, 30000110000),
+
+('Caio', 45, 'Florianopolis', 1100, 41000100000),
+
+('Carlos', 44, 'Florianopolis', 1200, 51000110000),
+
+('Paula', 33, 'Florianopolis', 2500, 61000111000);
+
+
+
+INSERT INTO consultas (codm, codp, data, hora) VALUES
+
+(1, 1, DATE '2006-06-12', TIME '14:00:00'),
+
+(1, 4, DATE '2006-06-13', TIME '10:00:00'),
+
+(2, 1, DATE '2006-06-13', TIME '9:00:00'),
+
+(2, 2, DATE '2006-06-13', TIME '11:00:00'),
+
+(2, 3, DATE '2006-06-14', TIME '14:00:00'),
+
+(2, 4, DATE '2006-06-13', TIME '17:00:00'),
+
+(3, 1, DATE '2006-06-19', TIME '18:00:00'),
+
+(3, 3, DATE '2006-06-12', TIME '10:00:00'),
+
+(3, 4, DATE '2006-06-19', TIME '13:00:00'),
+
+(4, 4, DATE '2006-06-20', TIME '13:00:00'),
+
+(4, 4, DATE '2006-06-22', TIME '19:30');

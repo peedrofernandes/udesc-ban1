@@ -1,0 +1,39 @@
+-- Buscar o nome e CPF dos médicos e dos pacientes cadastrados no hospital
+π nome, cpf (Medicos) ∪ π nome, cpf (Pacientes)
+
+-- Buscar o nome, CPF e idade dos médicos, pacientes e funcionários que residem em Florianópolis.
+π nome, cpf, idade σ cidade = 'Florianopolis' (Medicos) ∪
+
+π nome, cpf, idade σ cidade = 'Florianopolis' (Pacientes) ∪
+
+π nome, cpf, idade σ cidade = 'Florianopolis' (Funcionarios)
+
+-- Buscar o nome e cpf dos funcionários que recebem salários abaixo de R$500 e não estão internados como pacientes.
+π nome, cpf σ salario < 500 (
+
+	σ Consultas.codp != Funcionarios.codf 
+
+		(Funcionarios ⨯ Consultas)
+
+)
+
+-- Buscar o nome e cpf dos médicos pediatras que não atendem nos ambulatórios 101 e 102, e estão internados como pacientes sofrendo de gastrite.
+  π Medicos.nome, Medicos.cpf 
+
+	σ Medicos.codm = Pacientes.codp and Pacientes.doenca = 'gastrite' 
+
+	(Medicos ⨯ Pacientes)
+
+	-
+
+	π nome, cpf 
+
+	σ nroa != 101 and nroa != 102 (Medicos)
+
+-- Buscar o Nome e CPF do pacientes que consultaram apenas (somente) Médicos de Florianópolis.
+π Pacientes.nome, Pacientes.cpf
+
+(σ Medicos.codm = Consultas.codm and Pacientes.codp = Consultas.codp and Medicos.cidade = 'Florianopolis'
+
+(Consultas ⨯ Medicos ⨯ Pacientes))
+

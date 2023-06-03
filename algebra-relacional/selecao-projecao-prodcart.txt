@@ -1,0 +1,36 @@
+-- 1) Buscar os dados dos pacientes que estão com sarampo
+σ doenca = 'sarampo' (Pacientes)
+
+-- 2) Buscar os dados dos médicos ortopedistas com mais de 55 anos.
+σ idade > 55 (Medicos)
+
+-- 3) Buscar os dados de todas as consultas, exceto aquelas marcadas para os médicos com código 46 e 79
+σ codm = 46 or codm = 79 (Consultas)
+
+-- 4) Buscar os dados dos ambulatórios do quarto andar. Estes ambulatórios devem ter capacidade igual a 50 ou número superior a 10.
+σ andar = 4 and (capacidade = 50 or nroa > 10) (Ambulatorios)
+
+-- 5) Buscar o nome e a especialidade de todos os médicos
+π nome, especialidade (Medicos)
+
+-- 6) Buscar o número dos ambulatórios do terceiro andar
+π nroa σ andar = 3 (Ambulatorios)
+
+-- 7) Buscar o código dos médicos e as datas das consultas para os pacientes com código 122 e 725
+π Medicos.codm, data σ (codp = 122 or codp = 725) and Consultas.codm = Medicos.codm (Medicos ⨯ Consultas)
+
+-- 8) Buscar os números dos ambulatórios com capacidade superior a 5, exceto aqueles do segundo e quarto andares.
+π nroa σ capacidade > 5 and andar != 2 and andar != 4 (Ambulatorios)
+
+-- 9) Buscar o nome dos médicos que têm consulta marcada e as datas das suas consultas
+π nome, data σ Medicos.codm = Consultas.codm (Medicos ⨯ Consultas)
+
+-- 10) Buscar o número e a capacidade dos ambulatórios do segundo andar e o nome dos médicos ortopedistas que atendem neles.
+π Ambulatorios.nroa, capacidade, nome σ andar = 2 and especialidade = 'ortopedia' and Ambulatorios.nroa = Medicos.nroa (Ambulatorios ⨯ Medicos)
+
+-- 11) Buscar, para as consultas marcadas para o período da manhã (7hs-12hs) do dia 25/09/06, o nome do médico, o nome do paciente e a data da consulta.
+π m.nome, p.nome, c.data σ c.hora <= '12' and c.hora >= '7' and c.data = date('2006-09-25') and m.codm = c.codm and p.codp = c.codp (ρ m Medicos ⨯ ρ c Consultas ⨯ ρ p Pacientes) 
+
+-- 12) Buscar o nome e o salário dos funcionários de Florianópolis e Palhoça que estão internados como pacientes e têm consulta marcada com psiquiatras.
+π f.nome, f.salario σ (f.cidade = 'Florianopolis' or f.cidade = 'Palhoca') and f.cpf = p.cpf and m.especialidade = 'psiquiatra' and m.codm = c.codm and p.codp = c.codp (ρ f Funcionarios ⨯ ρ p Pacientes ⨯ ρ c Consultas ⨯ ρ m Medicos) 
+

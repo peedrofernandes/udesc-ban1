@@ -1,0 +1,116 @@
+-- 1) buscar os IDs e títulos dos filmes dos anos 2002 e 2003 com duração superior a 90 e inferior a 120. Exibir o resultado ordenado por título;
+select id, titulo from public.filmes where (ano = 2002 or ano = 2003) and (duracao > 90 and duracao < 120) order by titulo;
+
+
+-- 2) buscar os IDs e nomes dos funcionários do noturno que também são clientes e realizaram reservas em 01/10/2006;
+select * from public.funcionarios;
+select * from public.clientes;
+select * from public.reservas;
+
+select f.id, f.nome from public.funcionarios f 
+join public.clientes c on c.cpf = f.cpf
+join public.reservas r on r.cliente = c.id
+where turno = 'N' and r.datar = '2006-10-01';
+
+-- 3) buscar os títulos e nomes de estilos dos filmes locados em 30/09/2006 e 01/10/2006; Exibir o resultado ordenado de forma decrescente por estilo e de forma crescente por título;
+select * from public.filmes f
+join public.estilos e on f.estilo = e.id
+join public.locacoes l on l.filme = f.id
+where l.datar = '2006-09-30' or l.datar = '2006-10-01'
+order by f.estilo desc, f.titulo;
+
+-- 4) buscar os nomes e endereços dos clientes de Florianópolis e os nomes dos clientes que eles são responsáveis;
+select c1.nome, c2.nome from public.clientes c1
+join public.clientes c2 on c2.id = c1.responsavel
+where c1.cidade = 'Florianópolis';
+
+-- 5) buscar os nomes e endereços dos clientes que já entregaram DVDs com atraso;
+select c.nome, c.endereco from public.clientes c
+join public.locacoes l on c.id = l.cliente
+where l.dataD > l.datapd;
+
+-- 6) buscar os nomes, cidades e endereços dos funcionários do diurno (manhã e tarde) e dos clientes com reserva;
+select nome, cidade, endereco from public.funcionarios
+where turno = 'T' or turno = 'M'
+union
+select nome, cidade, endereco from public.clientes c
+join public.reservas r on r.cliente = c.id;
+
+
+-- 7) buscar as identificações (ID+filme) das cópias do filme X-Men 3 que estão disponíveis para locação ou reserva em 30/11/2006;
+select datar, datapd from public.reservas where filme = 2
+union
+select datar, datapd from public.locacoes where filme = 2;
+
+select * from public.filmes;
+
+select * from public.filmes f
+join public.reservas r on r.datapd < '2006-11-30'
+join public.locacoes l on l.datapd < '2006-11-30'
+where f.id = (select id from public.filmes f where titulo = 'X-Men 3');
+
+
+
+-- 8) buscar os IDs, nomes e fones dos clientes que já locaram tanto filmes em VHS quanto filmes em DVD;
+select distinct c.id, c.nome, c.fone from clientes c 
+join locacoes l on l.cliente = c.id
+join filmes f on l.filme = f.id
+join copias cp on cp.filme= f.id
+where cp.midia = 'DVD' or cp.midia = 'VHS';
+
+-- 9) buscar pares de identificadores de cópias diferentes que pertencem ao mesmo filme, sem repetir um mesmo par na resposta;
+select distinct c1.id, c2.id from copias c1
+join copias c2 on c1.id != c2.id
+where c1.filme = c2.filme
+order by c1.id, c2.id;
+
+-- 10) buscar os IDs, nomes e fones dos clientes que locaram apenas filmes de ação e de suspense;
+select c1.id, c1.nome, c1.fone from clientes c1
+where exists (select * from locacoes l where l.cliente = c1.id)
+and c1.id not in (
+  select c2.id from clientes c2
+  join locacoes l on l.cliente = c2.id
+  join filmes f on l.filme = f.id
+  join estilos e on f.estilo = e.id
+  where e.nome != 'ação' and e.nome != 'suspense'
+);
+
+select * from estilos;
+
+-- 11) buscar os IDs, nomes e fones dos clientes de Florianópolis que já locaram todos os VHS legendados;
+select c.id, c.nome, c.fone from clientes c
+where c.cidade = 'Florianópolis'
+and not exists (
+  select * from filmes f
+  join copias cp on cp.filme = f.id
+  where cp.midia = 'VHS' and cp.tipo = 'legendado'
+  and not exists (
+    select * from locacoes l
+    where l.filme = f.id
+    and l.cliente = c.id
+  )
+);
+
+
+select * from copias;
+
+-- 12) buscar os IDs e títulos dos filmes de ação que possuem duração superior a duração de todos os filmes de suspense, terror e drama.
+select f1.id, f1.titulo, f1.duracao from filmes f1
+join estilos e on e.id = f1.estilo
+where e.nome = 'ação'
+and not exists (
+  select * from filmes f2
+  join estilos e on e.id = f2.estilo
+  where e.nome in ('suspense', 'terror', 'drama')
+  and f1.duracao <= f2.duracao
+);
+
+select f.id, f.titulo, f.duracao from filmes f
+join estilos e on e.id = f.estilo 
+where e.nome = 'ação'
+and f.duracao > (
+  select max(duracao) from filmes f
+  join estilos e on e.id = f.estilo
+  where e.nome = 'terror' or e.nome = 'suspense' or e.nome = 'drama'
+);
+

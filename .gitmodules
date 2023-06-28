@@ -1,3 +1,4 @@
 [submodule "food-delivery-project"]
 	path = food-delivery-project
-	url = ./food-delivery-project
+	url = https://github.com/peedrofernandes/api_delivery
+
